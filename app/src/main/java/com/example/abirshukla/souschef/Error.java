@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class error extends AppCompatActivity {
+public class Error extends AppCompatActivity {
     TextView textView;
     Button button;
     String name;

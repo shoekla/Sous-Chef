@@ -19,36 +19,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".voice"
+            android:name=".Voice"
             android:label="@string/title_activity_voice"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".scrollVoice"
+            android:name=".ScrollVoice"
             android:label="@string/title_activity_scroll_voice"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ac1"
+            android:name=".Ac1"
             android:label="@string/title_activity_ac1"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".test"
+            android:name=".Test"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".speaker"
+            android:name=".Speaker"
             android:label="@string/title_activity_speaker"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".sample"
+            android:name=".Sample"
             android:label="@string/title_activity_sample"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".error"
+            android:name=".Error"
             android:label="@string/title_activity_error"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".sett" />
+        <activity android:name=".Sett" />
         <activity
-            android:name=".emailAct"
+            android:name=".EmailAct"
             android:label="@string/title_activity_email"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

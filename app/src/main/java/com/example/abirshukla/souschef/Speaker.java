@@ -16,7 +16,7 @@ import com.koushikdutta.ion.Ion;
 
 import java.util.Locale;
 
-public class speaker extends Activity implements DialogInterface.OnClickListener, TextToSpeech.OnInitListener, View.OnClickListener {
+public class Speaker extends Activity implements DialogInterface.OnClickListener, TextToSpeech.OnInitListener, View.OnClickListener {
     //TTS object
     private TextToSpeech myTTS;
     private TextToSpeech myTTSA;
@@ -43,7 +43,7 @@ public class speaker extends Activity implements DialogInterface.OnClickListener
         System.out.println("Res: " + res);
         said.setText(res);
         chefSpeak(res);
-        a = new Intent(this, ac1.class);
+        a = new Intent(this, Ac1.class);
         a.putExtra("nameOfDish", nameOfDish);
         String subject = wor.getString("subject");
         a.putExtra("subject",subject);

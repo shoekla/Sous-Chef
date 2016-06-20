@@ -35,7 +35,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 
-public class voice extends Activity {
+public class Voice extends Activity {
     TextView name;
     ProgressDialog pd;
     TextView info;
@@ -80,7 +80,7 @@ public class voice extends Activity {
         String link = dish.getString("link");
         String infoText = time+"\n\n"+servings+"\n\n"+ing+"\n\n"+ins;
         if (infoText.contains("<html>")) {
-            Intent er = new Intent(this,error.class);
+            Intent er = new Intent(this,Error.class);
             er.putExtra("name",namError);
             startActivity(er);
         }
@@ -142,10 +142,10 @@ public class voice extends Activity {
     }
     public void respond(String res) {
         res = res.toLowerCase();
-        Intent speak = new Intent(this, speaker.class);
+        Intent speak = new Intent(this, Speaker.class);
         String say = "";
         if (res.contains("email") || res.contains("send")) {
-            String name = dataForUser.getEmail();
+            String name = DataForUser.getEmail();
             String sub = "";
             String mess = "";
             if (res.contains("long") || res.contains("time")) {
@@ -638,7 +638,7 @@ public class voice extends Activity {
         startActivity(i);
     }
     public void takeToSample(View view) {
-        Intent sample = new Intent(this, com.example.abirshukla.souschef.sample.class);
+        Intent sample = new Intent(this, com.example.abirshukla.souschef.Sample.class);
         startActivity(sample);
     }
 

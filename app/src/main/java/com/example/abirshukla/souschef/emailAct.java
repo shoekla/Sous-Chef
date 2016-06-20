@@ -22,7 +22,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 
-public class emailAct extends Activity implements View.OnClickListener {
+public class EmailAct extends Activity implements View.OnClickListener {
 
     Session session = null;
     ProgressDialog pdialog = null;

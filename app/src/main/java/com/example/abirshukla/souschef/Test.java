@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-public class test extends AppCompatActivity {
+public class Test extends AppCompatActivity {
     TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
