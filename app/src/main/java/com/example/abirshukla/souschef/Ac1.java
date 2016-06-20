@@ -3,6 +3,8 @@ package com.example.abirshukla.souschef;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -23,11 +25,41 @@ public class Ac1 extends AppCompatActivity {
         int index = result.indexOf("<p>");
         int index2 = result.indexOf("</p>",index);
         String urA = result.substring(index + 3, index2);
-        getHTML(urA);
+        try {
+            getHTML(urA);
+        }
+        catch(Exception e) {
+            if (nameOfDish.length() < 2) {
+                Intent back = new Intent(this,MainActivity.class);
+                Toast.makeText(this, "Could not understand voice, please try again", Toast.LENGTH_SHORT).show();
+                startActivity(back);
+            }
+            else {
+                Intent err = new Intent(this, Error.class);
+                err.putExtra("name", nameOfDish);
+                startActivity(err);
+            }
+        }
         System.out.println("Link: "+result.substring(index+3,index2));
 
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
     public void getHTML(final String url) {
         System.out.println("Begin HTML");
         f.putExtra("link", url);

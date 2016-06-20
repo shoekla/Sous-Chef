@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(se);
         }
         String ea = DataForUser.getEmail();
-        Toast.makeText(this, ea, Toast.LENGTH_SHORT).show();
         ImageView im = (ImageView) findViewById(R.id.imageView);
         Button voiceB = (Button) findViewById(R.id.button);
 
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 speech_prompt);
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+
         } catch (ActivityNotFoundException a) {
             Toast.makeText(getApplicationContext(), "Speech Not Supported",
                     Toast.LENGTH_SHORT).show();
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void getHTML(final String url) {
         System.out.println("Begin HTML");
-        System.out.println("Final Url: "+url);
+        System.out.println("Final Url: " + url);
         final String[] d = new String[1];
         Ion.with(getApplicationContext())
                 .load(url)
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onCompleted(Exception e, String result) {
                         System.out.println("First Result: " + result);
                         a.putExtra("code", result);
-                        a.putExtra("subject","");
+                        a.putExtra("subject", "");
                         pd.dismiss();
                         startActivity(a);
                     }
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         SharedPreferences.Editor editor = sharedPref.edit();
         String email = DataForUser.getEmail();
-        editor.putString("email",email);
+        editor.putString("email", email);
         editor.commit();
         super.onDestroy();
     }
@@ -172,5 +173,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         String email = savedInstanceState.getString("email");
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 }
