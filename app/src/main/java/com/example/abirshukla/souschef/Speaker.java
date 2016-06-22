@@ -147,6 +147,7 @@ public class Speaker extends Activity implements DialogInterface.OnClickListener
 
     @Override
     public void onBackPressed() {
+        chefSpeak("");
         myTTSA.stop();
         myTTSA.shutdown();
         getHTML(url);

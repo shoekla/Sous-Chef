@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         //Intent speak = new Intent(MainActivity.this, speaker.class);
         //speak.putExtra("res",res);
         //startActivity(speak);
+        //Showing dialog
         pd.show();
         a.putExtra("nameOfDish", res);
         res = res.replace(" ","%20");

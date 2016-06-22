@@ -35,9 +35,7 @@ public class Ac1 extends AppCompatActivity {
                 startActivity(back);
             }
             else {
-                Intent err = new Intent(this, Error.class);
-                err.putExtra("name", nameOfDish);
-                startActivity(err);
+
             }
         }
         System.out.println("Link: "+result.substring(index+3,index2));
