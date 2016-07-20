@@ -12,25 +12,16 @@
     tools:context="com.example.abirshukla.souschef.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter Name of Dish"
-        android:id="@+id/button"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:onClick="prom"/>
+
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageView"
         android:src="@drawable/cheficon"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="140dp"/>
+        android:onClick="prom"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 
 

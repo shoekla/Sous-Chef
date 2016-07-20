@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
@@ -44,7 +43,6 @@ public class Voice extends Activity {
     String nameOfDish;
     String namError;
     String subject;
-    Firebase myFirebaseRef;
     ProgressDialog pdialog = null;
     Session session = null;
     Context context = null;

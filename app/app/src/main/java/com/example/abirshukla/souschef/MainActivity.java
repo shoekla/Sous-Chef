@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         a = new Intent(MainActivity.this, Ac1.class);
         pd = new ProgressDialog(this);
         pd.setMessage("Acquiring data for your dish...");
+        Toast.makeText(getApplicationContext(), "Click Icon to Begin!", Toast.LENGTH_LONG).show();
 
 
     }
@@ -128,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         //Intent speak = new Intent(MainActivity.this, speaker.class);
         //speak.putExtra("res",res);
         //startActivity(speak);
-        //Showing dialog
         pd.show();
         a.putExtra("nameOfDish", res);
         res = res.replace(" ","%20");
