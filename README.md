@@ -3,4 +3,4 @@ Sous Chef is an android app that allows you to access and organize data about di
 Video Demo URL : http://abirshukla.pythonanywhere.com/SousChef/ <br/>
 <br/>
 #Home Screen Picture
-<img src="https://scontent-ord1-1.xx.fbcdn.net/v/t34.0-12/13816751_10208134784941350_1822463391_n.png?oh=a97f93534ba16e4c8de387ffd28e7199&oe=57983540"/>
+<img src="http://abirshukla.pythonanywhere.com/static/sousChefhome.png"/>
