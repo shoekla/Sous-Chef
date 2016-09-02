@@ -529,7 +529,7 @@ public class Voice extends Activity {
         if (index3 == -1)
             return "<html>";
         String res = "Total time: ";
-        res = "Total Time "+code.substring(index+34,code.indexOf("</dd>",index+34))+ ", Prep Time "+code.substring(index2+14,code.indexOf("</dd>",index2+14))+", Cook Time "+code.substring(index3+14,code.indexOf("</dd>",index3+14));
+        res = "Total Time: "+code.substring(index+34,code.indexOf("</dd>",index+34))+ ", Prep Time "+code.substring(index2+14,code.indexOf("</dd>",index2+14))+", Cook Time "+code.substring(index3+14,code.indexOf("</dd>",index3+14));
         res = res.replace(" hr "," hour ");
         res = res.replace(" hr,"," hour,");
         res = res.replace(" hr"," hour");

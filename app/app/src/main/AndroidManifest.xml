@@ -30,7 +30,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Ac1"
-            android:label="@string/title_activity_ac1"
+            android:label="Loading Dish Data"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Test"
@@ -42,7 +42,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Sample"
-            android:label="@string/title_activity_sample"
+            android:label="Sample Voice Commands"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Error"

@@ -15,6 +15,7 @@ public class Ac1 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ac1);
         Bundle c = getIntent().getExtras();
         f = new Intent(this,Voice.class);
         String result = c.getString("code");
@@ -27,15 +28,18 @@ public class Ac1 extends AppCompatActivity {
         String urA = result.substring(index + 3, index2);
         try {
             getHTML(urA);
+            System.out.print("Good");
         }
         catch(Exception e) {
             if (nameOfDish.length() < 2) {
+                System.out.println("Try Error: "+e.toString());
                 Intent back = new Intent(this,MainActivity.class);
-                Toast.makeText(this, "Could not understand voice, please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
                 startActivity(back);
             }
             else {
 
+                System.out.println("Try Error: "+e.toString());
             }
         }
         System.out.println("Link: "+result.substring(index+3,index2));
