@@ -4,7 +4,7 @@ Video Demo URL : http://abirshukla.pythonanywhere.com/SousChef/ <br/>
 <br/>
 
 
-#Sous Chef Version 2.0 Goals
+# Sous Chef Version 2.0 Goals
 1. More ways to search
 2. More Types of results
 3. More Sous Chef Pages to choose from
