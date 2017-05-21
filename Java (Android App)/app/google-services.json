@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "629121488840",
+    "firebase_url": "https://sous-chef-153420.firebaseio.com",
+    "project_id": "sous-chef-153420",
+    "storage_bucket": "sous-chef-153420.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629121488840:android:4db1a7e8068a7f19",
+        "android_client_info": {
+          "package_name": "com.example.abirshukla.souschef"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629121488840-32sssv4fh9vor7alnlkf31om3162na0o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.abirshukla.souschef",
+            "certificate_hash": "f2bef73406d01dc2ad929fb21e007c88503675f9"
+          }
+        },
+        {
+          "client_id": "629121488840-771lgshumbbhv371ogqnmflrjdeu6cac.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "629121488840-k8hl8e2kenutlk4uvormek7stdv8h4dt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHTBXfUF6E0MOxV46phWIO1iYk-HKJKnc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629121488840-771lgshumbbhv371ogqnmflrjdeu6cac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

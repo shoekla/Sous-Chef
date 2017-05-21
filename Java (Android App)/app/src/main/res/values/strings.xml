@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Sous Chef</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_results">Results</string>
+    <string name="title_activity_sous_page">Sous Chef Page</string>
+</resources>
