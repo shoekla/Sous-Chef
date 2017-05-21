@@ -34,6 +34,9 @@ import static com.example.abirshukla.souschef.DataForUser.hm;
 
 
 public class SousPage extends AppCompatActivity {
+    private static final String KEYPHRASE = "oh mighty computer";
+    private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
+
     private final int REQ_CODE_SPEECH_INPUT = 100;
     //TextToSpeech t1;
     ProgressDialog pd;
@@ -112,17 +115,17 @@ public class SousPage extends AppCompatActivity {
         DataForUser.cals = result.substring(index2+1,result.indexOf(",",index2)).trim();
         String hmTime = "";
         if (timeText.contains("1 h")) {
-            hmTime = timeText.replace("h","hour");
+            hmTime = timeText.replace(" h","hour");
         }
         else {
-            hmTime = timeText.replace("h","hours");
+            hmTime = timeText.replace(" h","hours");
         }
         if (hmTime.contains("1 m")) {
-            hmTime = hmTime.replace("m","minute");
+            hmTime = hmTime.replace(" m","minute");
 
         }
         else {
-            hmTime = hmTime.replace("m","minutes");
+            hmTime = hmTime.replace(" m","minutes");
         }
         hm.put("time",hmTime);
         if (DataForUser.serve.equals("???")) {
@@ -190,6 +193,7 @@ public class SousPage extends AppCompatActivity {
             }
         });
     }
+
 
     //public void chefSpeak(final String speech) {
 
@@ -883,9 +887,10 @@ public class SousPage extends AppCompatActivity {
         //speak.putExtra("nameOfDish", nameOfDish);
         //speak.putExtra("subject",subject);
         //startActivity(speak);
-
-        Toast.makeText(SousPage.this, say, Toast.LENGTH_LONG).show();
-        myTTSA.speak(say, TextToSpeech.QUEUE_FLUSH, null);
+        if (say.length() != 0) {
+            Toast.makeText(SousPage.this, say, Toast.LENGTH_LONG).show();
+            myTTSA.speak(say, TextToSpeech.QUEUE_FLUSH, null);
+        }
         //t1.speak(say, TextToSpeech.QUEUE_FLUSH, null);
 
 
