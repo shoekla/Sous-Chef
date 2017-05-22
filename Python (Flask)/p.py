@@ -76,7 +76,7 @@ def getServings(plain_text):
 	i = plain_text.find('Original recipe yields')
 	if i == -1:
 		return "u???"
-	print i
+	#print i
 	return plain_text[i+23:plain_text.find("servings",i)].strip()
 def getCal(plain_text):
 	i = plain_text.find("""<span class="calorie-count" ng-class="{'active': nutritionSection_showing}"><span>""")
@@ -100,7 +100,7 @@ def scrape(url):
 					pages.append(href)
 	return pages
 
-#print getServings("http://allrecipes.com/recipe/256264/banana-tempura/")
+##print getServings("http://allrecipes.com/recipe/256264/banana-tempura/")
 def getSearch(name):
 	name = name.replace(" ","+")
 	url = "http://www.bing.com/search?q="+name+"&qs=n&form=QBLH&sp=-1&pq="+name+"&sc=9-6&sk=&cvid=ACF31D8DC7A140AC8CF356A0F61E10A1"
@@ -112,9 +112,8 @@ def scrapeVideo(url):
 	soup = BeautifulSoup(plain_text,"html.parser")
 	for link in soup.findAll('a'):
 		href = str(link.get("href")) #Gets the actual link
-		if "bing" not in href and "go.microsoft.com" not in href and "http://www.freebase.com/" not in href:
-			if href not in pages:
-				pages.append(href)
+		if href not in pages:
+			pages.append(href)
 	return pages
 def getVideoSearch(name):
 	name = name.replace(" ","+")
@@ -130,8 +129,8 @@ def getVideoSearch(name):
 def getSearchForDish(term):
 	return [getSearch(term+ " recipes"),getVideoSearch(term+" recipes"),getRecipes(term)]
 #u = getRecipes("burger")
-#print u
-#print getData(u)
+##print u
+##print getData(u)
 
 
 
