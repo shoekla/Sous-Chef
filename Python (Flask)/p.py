@@ -18,10 +18,8 @@ def removeHtml(s):
 			if i ==">":
 				check = True
 	return res.strip()
-def getIngredients(url):
+def getIngredients(plain_text):
 	pages = []
-	source_code = requests.get(url) #Gets source Code
-	plain_text = source_code.text
 	i = plain_text.find('<ul class="checklist dropdownwrapper list-ingredients-1"')
 	il = plain_text.find('<ul class="checklist dropdownwrapper list-ingredients-2"')
 	plain_text = plain_text[i:plain_text.find("</ul>",il)]
@@ -32,10 +30,8 @@ def getIngredients(url):
 	if len(pages) > 1:
 		pages[len(pages) -1] = pages[len(pages) -1][:-2]
 	return pages
-def getTimes(url):
+def getTimes(plain_text):
 	pages = []
-	source_code = requests.get(url) #Gets source Code
-	plain_text = source_code.text
 	i = plain_text.find('<ul class="prepTime">')
 	plain_text = plain_text[i:plain_text.find("</ul>",i)]
 	soup = BeautifulSoup(plain_text,"html.parser")
@@ -45,10 +41,8 @@ def getTimes(url):
 			pages.append(removeHtml(s))
 	
 	return pages[1:]
-def getDirections(url):
+def getDirections(plain_text):
 	pages = []
-	source_code = requests.get(url) #Gets source Code
-	plain_text = source_code.text
 	i = plain_text.find('<ol class="list-numbers recipe-directions__list" itemprop="recipeInstructions">')
 	plain_text = plain_text[i:plain_text.find("</ol>",i)]
 	soup = BeautifulSoup(plain_text,"html.parser")
@@ -78,23 +72,21 @@ def getRecipes(dish):
 					pages.append("http://allrecipes.com"+str(link.get("href")))
 	return pages
 
-def getServings(url):
-	source_code = requests.get(url) #Gets source Code
-	plain_text = source_code.text
+def getServings(plain_text):
 	i = plain_text.find('Original recipe yields')
 	if i == -1:
 		return "u???"
 	print i
 	return plain_text[i+23:plain_text.find("servings",i)].strip()
-def getCal(url):
-	source_code = requests.get(url) #Gets source Code
-	plain_text = source_code.text
+def getCal(plain_text):
 	i = plain_text.find("""<span class="calorie-count" ng-class="{'active': nutritionSection_showing}"><span>""")
 	if i == -1:
 		return "u???"
 	return plain_text[plain_text.find("n>",i)+2:plain_text.find("</span>",i)].strip()
 def getData(url):
-	return[getIngredients(url),getTimes(url),getServings(url),getCal(url),getDirections(url)]
+	source_code = requests.get(url) #Gets source Code
+	plain_text = source_code.text
+	return[getIngredients(plain_text),getTimes(plain_text),getServings(plain_text),getCal(plain_text),getDirections(plain_text)]
 def scrape(url):
 	pages = []
 	source_code = requests.get(url) #Gets source Code
