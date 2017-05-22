@@ -75,7 +75,17 @@ public class SousPage extends AppCompatActivity {
         for (int i = 0; i < ingr.length;i++) {
             System.out.println("Abir: Ingr: "+ingr[i].trim());
             if (ingr[i].length() > 1) {
-                DataForUser.ingredients.add(ingr[i].trim().substring(1));
+                if (ingr[i].contains(";a\",")) {
+                    String[] ar = ingr[i].split(";a\",");
+                    for (String sar: ar) {
+                        DataForUser.ingredients.add(sar.trim());
+
+                    }
+
+                }
+                else {
+                    DataForUser.ingredients.add(ingr[i].trim().substring(1));
+                }
             }
         }
         String[] time = result.substring(result.indexOf("]") + 1, result.lastIndexOf("],")).replace("Prep","").replace("Cook","").replace("Ready In","").split(",");
@@ -89,10 +99,18 @@ public class SousPage extends AppCompatActivity {
 
         String[] dir = result.substring(result.lastIndexOf("[") + 1, result.length() - 2).split(";a,");
 
-
         for (int i = 0; i < dir.length; i++) {
-            System.out.println("Abir: Dir: Step "+i+": " + dir[i]);
-            DataForUser.directions.add(dir[i]);
+            if (dir[i].contains(";a\",")) {
+                String[] ar = dir[i].split(";a\",");
+                for (String sar: ar) {
+                    System.out.println("Abir: Extra: "+sar);
+                    DataForUser.directions.add(sar.trim());
+                }
+
+            } else {
+                System.out.println("Abir: Dir: Step " + i + ": " + dir[i]);
+                DataForUser.directions.add(dir[i]);
+            }
         }
 
         //Put Data on screen

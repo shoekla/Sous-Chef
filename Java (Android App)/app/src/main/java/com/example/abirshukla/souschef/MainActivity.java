@@ -1,5 +1,6 @@
 package com.example.abirshukla.souschef;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +17,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -41,6 +45,7 @@ import com.koushikdutta.ion.Ion;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -89,6 +94,26 @@ public class MainActivity extends AppCompatActivity {
 
         }
         if (DataForUser.getEmail().length() == 0) {
+            int camera = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA);
+            int storage = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            int alarm = ContextCompat.checkSelfPermission(this, Manifest.permission.SET_ALARM);
+            List<String> listPermissionsNeeded = new ArrayList<>();
+            if (camera != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(android.Manifest.permission.CAMERA);
+            }
+            if (storage != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (alarm != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.SET_ALARM);
+            }
+            if (!listPermissionsNeeded.isEmpty())
+            {
+                ActivityCompat.requestPermissions(this,listPermissionsNeeded.toArray
+                        (new String[listPermissionsNeeded.size()]),1);
+
+            }
+
             Intent s = new Intent(MainActivity.this,Settings.class);
             startActivity(s);
         }
