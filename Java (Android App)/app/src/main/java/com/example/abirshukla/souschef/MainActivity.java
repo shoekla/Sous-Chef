@@ -40,6 +40,7 @@ import com.koushikdutta.ion.Ion;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -71,6 +72,19 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(email);
                 DataForUser.setEmail(email);
                 Toast.makeText(MainActivity.this, email+" signed in", Toast.LENGTH_SHORT).show();
+                try {
+                    String[] favs = sharedPref.getString("favs", "").split(",");
+                    for (int f = 0; f < favs.length; f++) {
+                        if (favs[f].trim().length() > 0) {
+                            System.out.println("Abir: Favs: " + favs[f].trim());
+                            DataForUser.favorites.add(favs[f].trim());
+                        }
+                    }
+                    //DataForUser.favorites.add("test");
+                    //DataForUser.favorites.add("test 2");
+                }catch (Exception e) {
+                    System.out.println("Abir: Favs: Error: "+e.toString());
+                }
             }
 
         }
@@ -152,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
     }
     public void prom (View view) {
         cameraUse = false;
@@ -210,7 +225,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.action_favorite) {
-            Toast.makeText(MainActivity.this, "Favorites Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent f = new Intent(MainActivity.this,Favorites.class);
+            startActivity(f);
 
         }
 
@@ -420,7 +436,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("email",DataForUser.getEmail());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        String email = DataForUser.getEmail();
+        editor.putString("email", email);
+        String[] builder = new String[DataForUser.favorites.size()];
+        for (int i = 0; i < DataForUser.favorites.size();i++) {
+            builder[i] = DataForUser.favorites.get(i);
+        }
+        String str = Arrays.toString(builder);
+        editor.putString("favs",str.substring(1,str.length()-1));
+
+        editor.commit();
         super.onSaveInstanceState(savedInstanceState);
 
     }
@@ -430,13 +456,24 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         String email = DataForUser.getEmail();
         editor.putString("email", email);
+        System.out.println("Abir: Fav: add Destroy: ");
+        String[] builder = new String[DataForUser.favorites.size()];
+        for (int i = 0; i < DataForUser.favorites.size();i++) {
+            builder[i] = DataForUser.favorites.get(i);
+        }
+        String str = Arrays.toString(builder);
+        System.out.println("Abir: Fav: add Destroy: " +str.substring(1,str.length()-1));
+        editor.putString("favs",str.substring(1,str.length()-1));
+
         editor.commit();
         super.onDestroy();
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
         String email = savedInstanceState.getString("email");
+        String favs = savedInstanceState.getString("favs");
+        super.onRestoreInstanceState(savedInstanceState);
+
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {

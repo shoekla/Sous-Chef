@@ -13,6 +13,8 @@ import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ public class SousPage extends AppCompatActivity {
     String nameOfDish = DataForUser.dishName;
     Session session = null;
     Context context = null;
+    String dishUrl = "";
     String rec, subjectEmail, textMessage;
     boolean v = false;
     private TextToSpeech myTTSA;
@@ -58,6 +61,7 @@ public class SousPage extends AppCompatActivity {
         pd.setMessage("Loading Data For "+DataForUser.dishName+"...");
         pd.show();
         Bundle b = getIntent().getExtras();
+        dishUrl = b.getString("dishUrl");
         TextView dishNameView = (TextView) findViewById(R.id.textView2);
         dishNameView.setText(DataForUser.dishName);
         String result = b.getString("result");
@@ -192,6 +196,37 @@ public class SousPage extends AppCompatActivity {
                 //Toast.makeText(SousPage.this, "Voice", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_sous, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent s = new Intent(SousPage.this,Settings.class);
+            startActivity(s);
+            return true;
+        }
+        else if (id == R.id.action_favorite) {
+            Intent f = new Intent(SousPage.this,Favorites.class);
+            startActivity(f);
+
+        }
+        else if (id == R.id.addRemoveFav) {
+            Toast.makeText(getApplicationContext(), DataForUser.editFav(dishUrl),
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -781,6 +816,14 @@ public class SousPage extends AppCompatActivity {
             startActivity(intent);
             return;
         }
+        else if (res.contains("fav") && res.contains("add")) {
+            DataForUser.favorites.add(dishUrl);
+            say = "Dish Added to Favorites";
+        }
+        else if(res.contains("fav") && res.contains("remove")) {
+            DataForUser.favorites.remove(dishUrl);
+            say = "Dish Removed Favorites";
+        }
         else if (res.contains("that") || res.contains("those") || res.contains("them") || res.contains("repeat")) {
             if (!subject.equals("")) {
                 if (subject.equals("video")) {
@@ -895,6 +938,7 @@ public class SousPage extends AppCompatActivity {
 
 
     }
+
     class RetreiveFeedTask extends AsyncTask<String, Void, String> {
 
         @Override

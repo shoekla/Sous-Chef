@@ -14,6 +14,7 @@ public class DataForUser {
     public static ArrayList<String> ingredients = new ArrayList<>();
     public static ArrayList<String> times = new ArrayList<>();
     public static ArrayList<String> directions = new ArrayList<>();
+    public static ArrayList<String> favorites = new ArrayList<>();
     public static String cals = "";
     public static String serve = "";
     public static String everything = "";
@@ -32,6 +33,16 @@ public class DataForUser {
     public static void setEmail(String email) {
         DataForUser.email = email;
         DataForUser.firebaseName = email.substring(0,email.indexOf("@")).replace(".","");
+    }
+    public static String editFav(String s) {
+        if (favorites.contains(s)) {
+            favorites.remove(s);
+            return "Removed Dish from Favorites";
+        }
+        else {
+            favorites.add(s);
+            return "Added Dish to Favorites";
+        }
     }
 
     public static String email = "";

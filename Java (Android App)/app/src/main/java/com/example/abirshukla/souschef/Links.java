@@ -23,6 +23,7 @@ public class Links extends AppCompatActivity {
     String query = "";
     String dishName = "";
     boolean sous = false;
+    String dishUrl = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +74,8 @@ public class Links extends AppCompatActivity {
                     sous = true;
                     dishName = DataForUser.sousTitles.get(position);
                     System.out.println("Abir Sous Enterd");
-                    getHTML("https://sous-chef2-0.herokuapp.com/sous"+DataForUser.sousPages.get(position).substring(DataForUser.sousPages.get(position).indexOf("recipe/")+6));
+                    dishUrl = DataForUser.sousPages.get(position).substring(DataForUser.sousPages.get(position).indexOf("recipe/")+6);
+                    getHTML("https://sous-chef2-0.herokuapp.com/sous"+dishUrl);
                     //Toast.makeText(Links.this, "Sous Link: "+, Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -104,6 +106,7 @@ public class Links extends AppCompatActivity {
                             //System.out.println("Abir: " + result);
                             System.out.println("Abir Res: " + result);
                             r.putExtra("result", result);
+                            r.putExtra("dishUrl",dishUrl);
 
                             pd.hide();
                             //pd.dismiss();
