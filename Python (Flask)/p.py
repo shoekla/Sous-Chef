@@ -71,7 +71,21 @@ def getRecipes(dish):
 				if "http://allrecipes.com"+str(link.get("href")) not in pages:
 					pages.append("http://allrecipes.com"+str(link.get("href")))
 	return pages
-
+def getMoreRecipes(dish,index):
+	dish = dish.replace(" ","&20")
+	url = "http://allrecipes.com/search/results/?wt="+dish+"&sort=re&page="+str(index)
+	pages = []
+	source_code = requests.get(url) #Gets source Code
+	plain_text = source_code.text
+	soup = BeautifulSoup(plain_text,"html.parser")
+	for link in soup.findAll('a'):
+		s = str(link)
+		if 'data-internal-referrer-link="hub recipe"' in s:
+			if "/recipe/" in s:
+				if "http://allrecipes.com"+str(link.get("href")) not in pages:
+					pages.append("http://allrecipes.com"+str(link.get("href")))
+	return pages
+#print getMoreRecipes("burger","3")
 def getServings(plain_text):
 	i = plain_text.find('Original recipe yields')
 	if i == -1:
@@ -128,7 +142,7 @@ def getVideoSearch(name):
 	return results
 def getSearchForDish(term):
 	return [getSearch(term+ " recipes"),getVideoSearch(term+" recipes"),getRecipes(term)]
-#u = getRecipes("burger")
+
 ##print u
 ##print getData(u)
 

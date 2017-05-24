@@ -15,6 +15,7 @@ public class DataForUser {
     public static ArrayList<String> times = new ArrayList<>();
     public static ArrayList<String> directions = new ArrayList<>();
     public static ArrayList<String> favorites = new ArrayList<>();
+    public static int indexMore = 2;
     public static String cals = "";
     public static String serve = "";
     public static String everything = "";

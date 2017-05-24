@@ -23,7 +23,9 @@ public class Links extends AppCompatActivity {
     String query = "";
     String dishName = "";
     boolean sous = false;
+    boolean loadMore = false;
     String dishUrl = "";
+    ArrayAdapter finalAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,8 @@ public class Links extends AppCompatActivity {
         what = b.getString("what");
         ArrayAdapter adapter = null;
         pd = new ProgressDialog(this);
-        pd.setMessage("Acquiring data for your dish...");
+        pd.setMessage("Acquiring data...");
+
         if (what.equals("link")) {
             adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, DataForUser.urls);
         }
@@ -48,6 +51,7 @@ public class Links extends AppCompatActivity {
         }
         ListView listView = (ListView) findViewById(R.id.mobile_list);
         listView.setAdapter(adapter);
+        finalAdapter = adapter;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -70,12 +74,25 @@ public class Links extends AppCompatActivity {
                     }
                 }
                 else if (what.equals("sous")) {
-                    pd.show();
-                    sous = true;
-                    dishName = DataForUser.sousTitles.get(position);
-                    System.out.println("Abir Sous Enterd");
-                    dishUrl = DataForUser.sousPages.get(position).substring(DataForUser.sousPages.get(position).indexOf("recipe/")+6);
-                    getHTML("https://sous-chef2-0.herokuapp.com/sous"+dishUrl);
+                    if (DataForUser.sousTitles.get(position) == "Load More Recipes") {
+
+                            pd.show();
+                            DataForUser.sousTitles.remove("Load More Recipes");
+                            loadMore = true;
+                            getHTML("https://sous-chef2-0.herokuapp.com/search/" + query + "/" + DataForUser.indexMore + "/");
+
+                            finalAdapter.notifyDataSetChanged();
+
+                    }
+                    else {
+                        pd.show();
+                        sous = true;
+                        dishName = DataForUser.sousTitles.get(position);
+                        System.out.println("Abir Sous Entered");
+                        dishUrl = DataForUser.sousPages.get(position).substring(DataForUser.sousPages.get(position).indexOf("recipe/") + 6);
+                        getHTML("https://sous-chef2-0.herokuapp.com/sous" + dishUrl);
+                    }
+
                     //Toast.makeText(Links.this, "Sous Link: "+, Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -92,9 +109,8 @@ public class Links extends AppCompatActivity {
         });
     }
     public void getHTML(final String url) {
-        if (sous) {
-            DataForUser.dishName = dishName;
-            System.out.println("Abir Url:Sous " + url);
+        if (loadMore) {
+            System.out.println("Abir: Url: "+url);
             final String[] d = new String[1];
             Ion.with(getApplicationContext())
                     .load(url)
@@ -102,48 +118,113 @@ public class Links extends AppCompatActivity {
                     .setCallback(new FutureCallback<String>() {
                         @Override
                         public void onCompleted(Exception e, String result) {
-                            Intent r = new Intent(Links.this, SousPage.class);
-                            //System.out.println("Abir: " + result);
-                            System.out.println("Abir Res: " + result);
-                            r.putExtra("result", result);
-                            r.putExtra("dishUrl",dishUrl);
+                            System.out.println("Abir: Res: " + result);
+                            if (result.length() != 0) {
 
-                            pd.hide();
-                            //pd.dismiss();
-                            startActivity(r);
+                                String[] arr = result.split(",");
+                                for (String s : arr) {
+                                    System.out.println("Abir: s: " + s);
+                                    DataForUser.sousPages.add(s);
+                                    String st = s.substring(0, s.length() - 1);
+                                    DataForUser.sousTitles.add(toTitleCase(st.substring(st.lastIndexOf("/") + 1).replace("-", " ")));
+                                }
+                                DataForUser.indexMore++;
+                                DataForUser.sousTitles.add("Load More Recipes");
+                                Intent l = new Intent(Links.this,Links.class);
+                                l.putExtra("query",query);
+                                l.putExtra("what",what);
+                                pd.hide();
+                                loadMore = false;
+                                finalAdapter.notifyDataSetChanged();
+
+                                //startActivity(l);
+                            }
                         }
+
                     });
 
 
         }
         else {
-            System.out.println("Abir Url: " + url);
-            final String[] d = new String[1];
-            Ion.with(getApplicationContext())
-                    .load(url)
-                    .asString()
-                    .setCallback(new FutureCallback<String>() {
-                        @Override
-                        public void onCompleted(Exception e, String result) {
-                            Intent r = new Intent(Links.this, SearchDish.class);
-                            //System.out.println("Abir: " + result);
-                            r.putExtra("query", userIn);
-                            System.out.println("Abir Res: " + result);
-                            r.putExtra("result", result);
+            if (sous) {
+                DataForUser.dishName = dishName;
+                System.out.println("Abir Url:Sous " + url);
+                final String[] d = new String[1];
+                Ion.with(getApplicationContext())
+                        .load(url)
+                        .asString()
+                        .setCallback(new FutureCallback<String>() {
+                            @Override
+                            public void onCompleted(Exception e, String result) {
+                                Intent r = new Intent(Links.this, SousPage.class);
+                                //System.out.println("Abir: " + result);
+                                System.out.println("Abir Res: " + result);
+                                r.putExtra("result", result);
+                                r.putExtra("dishUrl", dishUrl);
 
-                            pd.hide();
-                            //pd.dismiss();
-                            startActivity(r);
-                            //System.out.println("First Result: " + result);
-                            //a.putExtra("code", result);
-                            //a.putExtra("subject", "");
-                            //pd.dismiss();
-                            //startActivity(a);
-                        }
-                    });
+                                pd.hide();
+                                //pd.dismiss();
+                                startActivity(r);
+                            }
+                        });
+
+
+            } else {
+                System.out.println("Abir Url: " + url);
+                final String[] d = new String[1];
+                Ion.with(getApplicationContext())
+                        .load(url)
+                        .asString()
+                        .setCallback(new FutureCallback<String>() {
+                            @Override
+                            public void onCompleted(Exception e, String result) {
+                                Intent r = new Intent(Links.this, SearchDish.class);
+                                //System.out.println("Abir: " + result);
+                                r.putExtra("query", userIn);
+                                System.out.println("Abir Res: " + result);
+                                r.putExtra("result", result);
+
+                                pd.hide();
+                                //pd.dismiss();
+                                startActivity(r);
+                                //System.out.println("First Result: " + result);
+                                //a.putExtra("code", result);
+                                //a.putExtra("subject", "");
+                                //pd.dismiss();
+                                //startActivity(a);
+                            }
+                        });
+            }
+            sous = false;
         }
-        sous = false;
 
+    }
+    public static String toTitleCase(String str) {
+
+        if (str == null) {
+            return null;
+        }
+
+        boolean space = true;
+        StringBuilder builder = new StringBuilder(str);
+        final int len = builder.length();
+
+        for (int i = 0; i < len; ++i) {
+            char c = builder.charAt(i);
+            if (space) {
+                if (!Character.isWhitespace(c)) {
+                    // Convert to title case and switch out of whitespace mode.
+                    builder.setCharAt(i, Character.toTitleCase(c));
+                    space = false;
+                }
+            } else if (Character.isWhitespace(c)) {
+                space = true;
+            } else {
+                builder.setCharAt(i, Character.toLowerCase(c));
+            }
+        }
+
+        return builder.toString();
     }
     public void searchYoutube(View view) {
         Intent intent = new Intent(Intent.ACTION_SEARCH);

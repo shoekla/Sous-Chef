@@ -58,6 +58,7 @@ public class SearchDish extends AppCompatActivity {
         String[] words = result.substring(result.lastIndexOf("[") + 1, result.length() - 2).split(",");
         DataForUser.sousPages.clear();
         DataForUser.sousTitles.clear();
+        DataForUser.indexMore = 2;
 
         for (int i = 0; i < words.length; i++) {
             //System.out.println("Abir: Sous: " + words[i]);
@@ -65,10 +66,12 @@ public class SearchDish extends AppCompatActivity {
             String st = words[i].substring(0,words[i].length()-1);
             DataForUser.sousTitles.add(toTitleCase(st.substring(st.lastIndexOf("/")+1).replace("-"," ")));
         }
+
+        DataForUser.sousTitles.add("Load More Recipes");
         final ArrayList<String> menuList = new ArrayList<>();
         menuList.add(urls.length + " Helpful Links Found");
         menuList.add(vids.length + " Helpful Videos Found");
-        menuList.add(words.length + " Sous Chef Pages Found");
+        menuList.add(words.length + "+ Sous Chef Pages Found");
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, menuList);
         ListView listView = (ListView) findViewById(R.id.mobile_list);

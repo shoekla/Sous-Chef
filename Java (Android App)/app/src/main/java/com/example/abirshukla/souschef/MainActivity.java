@@ -59,9 +59,7 @@ public class MainActivity extends AppCompatActivity {
     boolean gal = false;
     boolean scrapePic = false;
     String userIn = "";
-    private static final String[] COUNTRIES = new String[] {
-            "Belgium", "France", "Italy", "Germany", "Spain", "Bruce","Brian","Brain","Brehh","Bro","banana"
-    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,28 +116,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(s);
         }
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        /*
-        final EditText edit_txt = (EditText) findViewById(R.id.editText);
 
-        edit_txt.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    pd.show();
-                    userIn = edit_txt.getText().toString();
-
-                    String res = userIn.replace(" ","%20");
-                    scrapePic = false;
-                    getHTML("https://sous-chef2-0.herokuapp.com/search/"+res+"/");
-                    return true;
-                }
-                return false;
-            }
-        });
-        */
+        String[] foods = {"asparagus", "apples", "avocado", "alfalfa", "squash", "almond", "arugula", "artichoke", "applesauce", "noodles", "antelope", "ahi", "tuna", "albacore", "tuna", "apple", "juice", "avocado", "roll", "bruscetta", "bacon", "black", "beans", "bagels", "baked", "beans", "bbq", "bison", "barley", "beer", "bisque", "bluefish", "bread", "broccoli", "buritto", "babaganoosh", "cabbage", "cake", "carrots", "carne", "asada", "celery", "cheese", "chicken", "catfish", "chips", "chocolate", "chowder", "clams", "coffee", "cookies", "corn", "cupcakes", "crab", "curry", "cereal", "chimichanga", "dates", "dips", "duck", "dumplings", "donuts", "eggs", "enchilada", "eggrolls", "english", "muffins", "edimame", "eel", "sushi", "fajita", "falafel", "fish", "franks", "fondu", "french", "toast", "french", "dip", "garlic", "ginger", "gnocchi", "goose", "granola", "grapes", "green", "beans", "guancamole", "gumbo", "grits", "graham", "crackers", "ham", "halibut", "hamburger", "cheeseburgers", "bacon", "cheeseburgers", "honey", "huenos", "rancheros", "hash", "browns", "hot", "dogs", "haiku", "roll", "hummus", "ice", "cream", "irish", "stew", "indian", "food", "italian", "bread", "jambalaya", "jelly", "jam", "jerky", "jalape", "kale", "kabobs", "ketchup", "kiwi", "kidney", "beans", "kingfish", "lobster", "lamb", "linguine", "lasagna", "meatballs", "moose", "milk", "milkshake", "noodles", "ostrich", "pizza", "pepperoni", "porter", "pancakes", "quesadilla", "quiche", "reuben", "spinach", "spaghetti", "tater", "tots", "toast", "venison", "waffles", "wine", "walnuts", "yogurt", "ziti", "zucchini"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.select_dialog_item, COUNTRIES);
+                android.R.layout.select_dialog_item, foods);
         final AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.editText);
         textView.setThreshold(1);
@@ -164,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     userIn = textView.getText().toString();
+                    userIn = userIn.trim();
                     String res = userIn.replace(" ","%20");
                     scrapePic = false;
                     pd.show();
@@ -181,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 in.hideSoftInputFromWindow(arg1.getApplicationWindowToken(), 0);
                 userIn = textView.getText().toString();
+                userIn = userIn.trim();
                 String res = userIn.replace(" ","%20");
                 scrapePic = false;
                 pd.show();

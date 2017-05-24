@@ -10,6 +10,10 @@ app = Flask(__name__)
 def getRecipeDeets(name):
 	s = str(p.getSearchForDish(name)).replace("'","")
 	return s
+@app.route('/search/<name>/<index>/')
+def getRecipeMoreDeets(name,index):
+	s = str(p.getMoreRecipes(name,index)).replace("'","")[1:-1]
+	return s
 @app.route("/sous/<num>/<dish>/")
 def getDishDeets(num,dish):
 	url = "http://allrecipes.com/recipe/"+str(num)+"/"+str(dish)+"/"

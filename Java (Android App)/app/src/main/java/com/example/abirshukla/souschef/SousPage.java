@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
@@ -32,17 +34,26 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import edu.cmu.pocketsphinx.Assets;
+import edu.cmu.pocketsphinx.Hypothesis;
+import edu.cmu.pocketsphinx.RecognitionListener;
+import edu.cmu.pocketsphinx.SpeechRecognizer;
+
 import static com.example.abirshukla.souschef.DataForUser.hm;
+import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
+public class SousPage extends AppCompatActivity implements RecognitionListener {
+    private static final String KWS_SEARCH = "wakeup";
+    private static final String KEYPHRASE = "listen to command"; //adjust this keyphrase!
 
-public class SousPage extends AppCompatActivity {
-    private static final String KEYPHRASE = "oh mighty computer";
-    private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
+    private SpeechRecognizer recognizer;
 
     private final int REQ_CODE_SPEECH_INPUT = 100;
     //TextToSpeech t1;
     ProgressDialog pd;
     String subject = "";
+
+    //private SpeechRecognizerManager mSpeechRecognizerManager;
     String nameOfDish = DataForUser.dishName;
     Session session = null;
     Context context = null;
@@ -183,13 +194,16 @@ public class SousPage extends AppCompatActivity {
         }
         hm.put("insArr",insArr);
         hm.put("insWhole",dire);
-        timeView.setText(timeText+"\n"+"Cal: "+DataForUser.cals+", Serves: "+DataForUser.serve+"\n\n"+ing+"\n");
         DataForUser.everything = timeText+"\n"+"Cal: "+DataForUser.cals+", Serves: "+DataForUser.serve+"\n\n"+ing+"\n";
+        DataForUser.everything = DataForUser.everything.replace(";a,","").replace("\\xae","").replace(".;a","");
+        timeView.setText(DataForUser.everything);
 
 
 
+        //mSpeechRecognizerManager=new SpeechRecognizerManager(this);
 
-        Intent checkTTSIntentA = new Intent();
+
+    Intent checkTTSIntentA = new Intent();
         checkTTSIntentA.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkTTSIntentA, MY_DATA_CHECK_CODEA);
         myTTSA = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -214,7 +228,105 @@ public class SousPage extends AppCompatActivity {
                 //Toast.makeText(SousPage.this, "Voice", Toast.LENGTH_SHORT).show();
             }
         });
+        new AsyncTask < Void, Void, Exception > () {
+            @Override
+            protected Exception doInBackground(Void...params) {
+                try {
+                    Assets assets = new Assets(SousPage.this);
+                    File assetDir = assets.syncAssets();
+                    setupRecognizer(assetDir);
+                } catch (IOException e) {
+                    return e;
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Exception result) {
+                if (result != null) {
+                    Toast.makeText(SousPage.this, "Failed to init pocketSphinxRecognizer ", Toast.LENGTH_SHORT).show();
+                } else {
+                    recognizer.startListening(KWS_SEARCH);
+                }
+            }
+        }.execute();
+
     }
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        recognizer.cancel();
+        recognizer.shutdown();
+    }
+
+    /**
+     * In partial result we get quick updates about current hypothesis. In
+     * keyword spotting mode we can react here, in other modes we need to wait
+     * for final result in onResult.
+     */
+    @Override
+    public void onPartialResult(Hypothesis hypothesis) {
+        if (hypothesis == null)
+            return;
+
+        String text = hypothesis.getHypstr();
+        if (text.equals(KEYPHRASE)) {
+            recognizer.cancel();
+            performAction();     // <- You have to implement this
+            recognizer.startListening(KWS_SEARCH);
+        }
+    }
+
+    private void performAction() {
+    }
+
+    @Override
+    public void onResult(Hypothesis hypothesis) {}
+
+    @Override
+    public void onBeginningOfSpeech() {}
+
+    @Override
+    public void onEndOfSpeech() {}
+
+    @Override
+    public void onTimeout() {}
+
+    private void setupRecognizer(File assetsDir) throws IOException {
+        // The recognizer can be configured to perform multiple searches
+        // of different kind and switch between them
+
+        recognizer = defaultSetup()
+                .setAcousticModel(new File(assetsDir, "en-us-ptm"))
+                .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                .getRecognizer();
+        recognizer.addListener(this);
+
+        // Create keyword-activation search.
+        recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
+    }
+
+    @Override
+    public void onError(Exception error) {
+    }
+
+
+
+
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -302,6 +414,8 @@ public class SousPage extends AppCompatActivity {
         }
 
     }
+
+
     public void respond(String res) {
         if (res.equals("help")) {
             Intent sample = new Intent(this, com.example.abirshukla.souschef.Sample.class);
