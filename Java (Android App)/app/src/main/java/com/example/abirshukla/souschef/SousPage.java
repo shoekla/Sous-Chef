@@ -1,6 +1,5 @@
 package com.example.abirshukla.souschef;
 
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -44,13 +43,12 @@ import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
 public class SousPage extends AppCompatActivity implements RecognitionListener {
     private static final String KWS_SEARCH = "wakeup";
-    private static final String KEYPHRASE = "listen to command"; //adjust this keyphrase!
+    private static final String KEYPHRASE = "sous chef"; //adjust this keyphrase!
 
     private SpeechRecognizer recognizer;
 
     private final int REQ_CODE_SPEECH_INPUT = 100;
     //TextToSpeech t1;
-    ProgressDialog pd;
     String subject = "";
 
     //private SpeechRecognizerManager mSpeechRecognizerManager;
@@ -68,9 +66,7 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
         setContentView(R.layout.activity_sous_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        pd = new ProgressDialog(this);
-        pd.setMessage("Loading Data For "+DataForUser.dishName+"...");
-        pd.show();
+
         Bundle b = getIntent().getExtras();
         dishUrl = b.getString("dishUrl");
         TextView dishNameView = (TextView) findViewById(R.id.textView2);
@@ -211,60 +207,63 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
                     myTTSA.setLanguage(Locale.UK);
-                    pd.hide();
+
 
 
 
                 }
             }
         });
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 myTTSA.stop();
+                recognizer.cancel();
                 v = true;
                 promptSpeechInput();
                 //Toast.makeText(SousPage.this, "Voice", Toast.LENGTH_SHORT).show();
             }
         });
-        new AsyncTask < Void, Void, Exception > () {
-            @Override
-            protected Exception doInBackground(Void...params) {
-                try {
-                    Assets assets = new Assets(SousPage.this);
-                    File assetDir = assets.syncAssets();
-                    setupRecognizer(assetDir);
-                } catch (IOException e) {
-                    return e;
+        try {
+            new AsyncTask<Void, Void, Exception>() {
+                @Override
+                protected Exception doInBackground(Void... params) {
+                    try {
+                        Assets assets = new Assets(SousPage.this);
+                        File assetDir = assets.syncAssets();
+                        setupRecognizer(assetDir);
+                        //Toast.makeText(, "Touch Button or say 'Sous Chef' for voice commands! ", Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        return e;
+                    }
+                    return null;
                 }
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Exception result) {
-                if (result != null) {
-                    Toast.makeText(SousPage.this, "Failed to init pocketSphinxRecognizer ", Toast.LENGTH_SHORT).show();
-                } else {
-                    recognizer.startListening(KWS_SEARCH);
+                @Override
+                protected void onPostExecute(Exception result) {
+                    if (result != null) {
+                        //Toast.makeText(SousPage.this, "Failed to init pocketSphinxRecognizer ", Toast.LENGTH_SHORT).show();
+                    } else {
+                        recognizer.startListening(KWS_SEARCH);
+                    }
                 }
-            }
-        }.execute();
+            }.execute();
+            Toast.makeText(SousPage.this, "Touch Button or say 'Sous Chef' for voice commands! ", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(SousPage.this, "Failed to init pocketSphinxRecognizer ", Toast.LENGTH_SHORT).show();
+        }
 
     }
-
-
-
-
-
-
-
 
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        myTTSA.stop();
         recognizer.cancel();
         recognizer.shutdown();
     }
@@ -280,15 +279,17 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
             return;
 
         String text = hypothesis.getHypstr();
+        System.out.println("Abir: Poc: "+text);
         if (text.equals(KEYPHRASE)) {
             recognizer.cancel();
-            performAction();     // <- You have to implement this
-            recognizer.startListening(KWS_SEARCH);
+            myTTSA.stop();
+            v = true;
+            promptSpeechInput();    // <- You have to implement this
+
         }
     }
 
-    private void performAction() {
-    }
+
 
     @Override
     public void onResult(Hypothesis hypothesis) {}
@@ -1066,6 +1067,9 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
             Toast.makeText(SousPage.this, say, Toast.LENGTH_LONG).show();
             myTTSA.speak(say, TextToSpeech.QUEUE_FLUSH, null);
         }
+
+        System.out.println("Abir: Poc: Not Saying Anything so listen");
+        recognizer.startListening(KWS_SEARCH);
         //t1.speak(say, TextToSpeech.QUEUE_FLUSH, null);
 
 
@@ -1097,6 +1101,7 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
             Toast.makeText(getApplicationContext(), "Message Successfully Sent!", Toast.LENGTH_LONG).show();
         }
     }
+
     public void goToMap(View view) {
         // Search for restaurants nearby
         Uri gmmIntentUri = Uri.parse("geo:0,0?q=Grocery");

@@ -134,6 +134,7 @@ public class Links extends AppCompatActivity {
                                 l.putExtra("query",query);
                                 l.putExtra("what",what);
                                 pd.hide();
+                                pd.dismiss();
                                 loadMore = false;
                                 finalAdapter.notifyDataSetChanged();
 
@@ -163,6 +164,7 @@ public class Links extends AppCompatActivity {
                                 r.putExtra("dishUrl", dishUrl);
 
                                 pd.hide();
+                                pd.dismiss();
                                 //pd.dismiss();
                                 startActivity(r);
                             }
@@ -185,6 +187,7 @@ public class Links extends AppCompatActivity {
                                 r.putExtra("result", result);
 
                                 pd.hide();
+                                pd.dismiss();
                                 //pd.dismiss();
                                 startActivity(r);
                                 //System.out.println("First Result: " + result);

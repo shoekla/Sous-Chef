@@ -97,6 +97,7 @@ public class Favorites extends AppCompatActivity {
                             r.putExtra("dishUrl", dishUrl);
 
                             pd.hide();
+                            pd.dismiss();
                             //pd.dismiss();
                             startActivity(r);
                         }

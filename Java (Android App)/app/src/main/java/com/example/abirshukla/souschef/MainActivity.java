@@ -404,6 +404,7 @@ public class MainActivity extends AppCompatActivity {
                             r.putExtra("result", result);
                             scrapePic = false;
                             pd.hide();
+                            pd.dismiss();
                             //pd.dismiss();
                             startActivity(r);
                             //System.out.println("First Result: " + result);
@@ -428,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
                             r.putExtra("result", result);
                             scrapePic = false;
                             pd.hide();
-                            //pd.dismiss();
+                            pd.dismiss();
                             startActivity(r);
                             //System.out.println("First Result: " + result);
                             //a.putExtra("code", result);
