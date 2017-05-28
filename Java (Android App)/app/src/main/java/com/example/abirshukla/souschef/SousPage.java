@@ -1,5 +1,6 @@
 package com.example.abirshukla.souschef;
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +45,7 @@ import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 public class SousPage extends AppCompatActivity implements RecognitionListener {
     private static final String KWS_SEARCH = "wakeup";
     private static final String KEYPHRASE = "sous chef"; //adjust this keyphrase!
-
+    ProgressDialog pd;
     private SpeechRecognizer recognizer;
 
     private final int REQ_CODE_SPEECH_INPUT = 100;
@@ -56,6 +57,7 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
     Session session = null;
     Context context = null;
     String dishUrl = "";
+
     String rec, subjectEmail, textMessage;
     boolean v = false;
     private TextToSpeech myTTSA;
@@ -68,6 +70,9 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
         setSupportActionBar(toolbar);
 
         Bundle b = getIntent().getExtras();
+        pd = new ProgressDialog(this);
+        pd.setMessage("Acquiring data for your dish...");
+        pd.show();
         dishUrl = b.getString("dishUrl");
         TextView dishNameView = (TextView) findViewById(R.id.textView2);
         dishNameView.setText(DataForUser.dishName);
@@ -207,7 +212,8 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
                     myTTSA.setLanguage(Locale.UK);
-
+                    pd.hide();
+                    pd.dismiss();
 
 
 

@@ -66,9 +66,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (DataForUser.foodDishes.length() == 0) {
+            Intent l = new Intent(MainActivity.this,LoadDish.class);
+            startActivity(l);
+        }
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        pd = new ProgressDialog(this);
-        pd.setMessage("Acquiring data for your dish...");
+
         if (sharedPref != null) {
             String email = sharedPref.getString("email", "");
             if (!email.equals("") && DataForUser.getEmail().equals("")) {
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         }
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        String[] foods = {"asparagus", "apples", "avocado", "alfalfa", "squash", "almond", "arugula", "artichoke", "applesauce", "noodles", "antelope", "ahi", "tuna", "albacore", "tuna", "apple", "juice", "avocado", "roll", "bruscetta", "bacon", "black", "beans", "bagels", "baked", "beans", "bbq", "bison", "barley", "beer", "bisque", "bluefish", "bread", "broccoli", "buritto", "babaganoosh", "cabbage", "cake", "carrots", "carne", "asada", "celery", "cheese", "chicken", "catfish", "chips", "chocolate", "chowder", "clams", "coffee", "cookies", "corn", "cupcakes", "crab", "curry", "cereal", "chimichanga", "dates", "dips", "duck", "dumplings", "donuts", "eggs", "enchilada", "eggrolls", "english", "muffins", "edimame", "eel", "sushi", "fajita", "falafel", "fish", "franks", "fondu", "french", "toast", "french", "dip", "garlic", "ginger", "gnocchi", "goose", "granola", "grapes", "green", "beans", "guancamole", "gumbo", "grits", "graham", "crackers", "ham", "halibut", "hamburger", "cheeseburgers", "bacon", "cheeseburgers", "honey", "huenos", "rancheros", "hash", "browns", "hot", "dogs", "haiku", "roll", "hummus", "ice", "cream", "irish", "stew", "indian", "food", "italian", "bread", "jambalaya", "jelly", "jam", "jerky", "jalape", "kale", "kabobs", "ketchup", "kiwi", "kidney", "beans", "kingfish", "lobster", "lamb", "linguine", "lasagna", "meatballs", "moose", "milk", "milkshake", "noodles", "ostrich", "pizza", "pepperoni", "porter", "pancakes", "quesadilla", "quiche", "reuben", "spinach", "spaghetti", "tater", "tots", "toast", "venison", "waffles", "wine", "walnuts", "yogurt", "ziti", "zucchini"};
+        String[] foods = DataForUser.foodDishes.split(",");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.select_dialog_item, foods);
         final AutoCompleteTextView textView = (AutoCompleteTextView)
@@ -126,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
         textView.setAdapter(adapter);
         textView.setDropDownHeight(RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView.setDropDownWidth(RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+
+        System.out.println("Abir: foodDish: "+DataForUser.foodDishes);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             textView.setOnScrollChangeListener(new AdapterView.OnScrollChangeListener() {
 
@@ -147,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
                     userIn = userIn.trim();
                     String res = userIn.replace(" ","%20");
                     scrapePic = false;
+                    pd = new ProgressDialog(MainActivity.this);
+                    pd.setMessage("Acquiring data for your dish...");
                     pd.show();
                     getHTML("https://sous-chef2-0.herokuapp.com/search/"+res+"/");
                     //add to firbase
@@ -165,6 +174,9 @@ public class MainActivity extends AppCompatActivity {
                 userIn = userIn.trim();
                 String res = userIn.replace(" ","%20");
                 scrapePic = false;
+
+                pd = new ProgressDialog(MainActivity.this);
+                pd.setMessage("Acquiring data for your dish...");
                 pd.show();
                 getHTML("https://sous-chef2-0.herokuapp.com/search/"+res+"/");
                 //Toast.makeText(MainActivity.this,"Back Pressed !!!", Toast.LENGTH_SHORT).show();
@@ -278,6 +290,9 @@ public class MainActivity extends AppCompatActivity {
             final String pathPython = DataForUser.getFirbaseName()+imageName;
             StorageReference riversRef = mStorageRef.child(pathPython);
 
+            pd = new ProgressDialog(MainActivity.this);
+            pd.setMessage("Acquiring data for your dish...");
+            pd.show();
             riversRef.putFile(file)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -285,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
                             // Get a URL to the uploaded content
                             //Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             scrapePic = true;
+
                             getHTML("http://abirshukla.pythonanywhere.com/sousC/"+pathPython+"/");
                         }
                     })
@@ -295,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
                             // ...
                         }
                     });
-            pd.show();
+
 
             gal = false;
             return;
@@ -320,6 +336,9 @@ public class MainActivity extends AppCompatActivity {
                 final String pathPython = DataForUser.getFirbaseName()+imageName;
                 StorageReference riversRef = mStorageRef.child(pathPython);
 
+                pd = new ProgressDialog(MainActivity.this);
+                pd.setMessage("Acquiring data for your dish...");
+                pd.show();
                 riversRef.putFile(file)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
@@ -327,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
                                 // Get a URL to the uploaded content
                                 //Uri downloadUrl = taskSnapshot.getDownloadUrl();
                                 scrapePic = true;
+
                                 getHTML("http://abirshukla.pythonanywhere.com/sousC/"+pathPython+"/");
                             }
                         })
@@ -337,7 +357,6 @@ public class MainActivity extends AppCompatActivity {
                                 // ...
                             }
                         });
-                pd.show();
                 cameraUse = false;
 
 
@@ -379,6 +398,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Toast.makeText(MainActivity.this, "You Said: " + res, Toast.LENGTH_SHORT).show();
+
+            pd = new ProgressDialog(MainActivity.this);
+            pd.setMessage("Acquiring data for your dish...");
             pd.show();
             userIn = res;
             res = res.replace(" ","%20");

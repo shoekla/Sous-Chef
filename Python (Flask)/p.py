@@ -4,6 +4,19 @@ import requests
 import string
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
+import pyrebase
+import os
+config = {
+  "apiKey": "AIzaSyDQWQHkAGE_3wH5ZvjrzuNj-TKwDQ5kKbw",
+  "authDomain": "sous-chef-153420.firebaseapp.com",
+  "databaseURL": "https://sous-chef-153420.firebaseio.com",
+  "storageBucket": "sous-chef-153420.appspot.com"
+}
+
+firebase = pyrebase.initialize_app(config)
+db = firebase.database()
+foods = str(db.child("food").get().val())
+
 
 def removeHtml(s):
 	res = ""
@@ -141,6 +154,11 @@ def getVideoSearch(name):
 					results.append(i.replace("/watch?v=",""))
 	return results
 def getSearchForDish(term):
+	term = term.lower()
+	global foods
+	if term not in foods:
+		foods = foods+","+term
+		db.child("food").set(foods)
 	return [getSearch(term+ " recipes"),getVideoSearch(term+" recipes"),getRecipes(term)]
 
 ##print u

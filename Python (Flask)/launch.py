@@ -19,4 +19,4 @@ def getDishDeets(num,dish):
 	url = "http://allrecipes.com/recipe/"+str(num)+"/"+str(dish)+"/"
 	return str(p.getData(url)).replace("'","")
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run()

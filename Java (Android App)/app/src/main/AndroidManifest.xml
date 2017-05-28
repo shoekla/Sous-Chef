@@ -7,8 +7,8 @@
     <permission android:name="android.permission.FLASHLIGHT" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="com.android.alarm.permission.SET_TIMER" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -42,7 +42,10 @@
             android:label="@string/title_activity_sous_page"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Sample" />
-        <activity android:name=".Favorites"></activity>
+        <activity android:name=".Favorites" />
+        <activity android:name=".LoadDish">
+
+        </activity>
     </application>
 
 </manifest>
