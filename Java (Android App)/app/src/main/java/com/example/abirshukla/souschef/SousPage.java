@@ -227,7 +227,11 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
             @Override
             public void onClick(View view) {
                 myTTSA.stop();
-                recognizer.cancel();
+                try {
+                    recognizer.cancel();
+                } catch (Exception e) {
+
+                }
                 v = true;
                 promptSpeechInput();
                 //Toast.makeText(SousPage.this, "Voice", Toast.LENGTH_SHORT).show();
@@ -257,7 +261,7 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
                     }
                 }
             }.execute();
-            Toast.makeText(SousPage.this, "Touch Button or say 'Sous Chef' for voice commands! ", Toast.LENGTH_LONG).show();
+            Toast.makeText(SousPage.this, "Touch Button for voice commands! ", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(SousPage.this, "Failed to init pocketSphinxRecognizer ", Toast.LENGTH_SHORT).show();
         }
@@ -1075,7 +1079,12 @@ public class SousPage extends AppCompatActivity implements RecognitionListener {
         }
 
         System.out.println("Abir: Poc: Not Saying Anything so listen");
-        recognizer.startListening(KWS_SEARCH);
+        try {
+            recognizer.startListening(KWS_SEARCH);
+        }
+        catch (Exception e) {
+
+        }
         //t1.speak(say, TextToSpeech.QUEUE_FLUSH, null);
 
 
