@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
                             // Get a URL to the uploaded content
                             //Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             scrapePic = true;
-
+                            System.out.println("Abir: Data: Img uploaded!");
                             getHTML("http://abirshukla.pythonanywhere.com/sousC/"+pathPython+"/");
                         }
                     })
